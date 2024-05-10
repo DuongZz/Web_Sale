@@ -8,6 +8,7 @@ const USER_COLLECTION_SCHEMA = Joi.object({
   password: Joi.string().min(5).max(20).trim().strict(),
   address: Joi.string().min(5).max(100).trim().strict(),
   phone: Joi.string().min(10).max(15).trim().strict(),
+  role: Joi.string().valid("user", "admin", "staff"),
   orderId: Joi.array()
     .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
     .default([]),

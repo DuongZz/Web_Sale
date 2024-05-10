@@ -8,6 +8,7 @@ const validateUser = async (req, res, next) => {
     password: Joi.string().min(5).max(20).trim().strict(),
     address: Joi.string().min(5).max(100).trim().strict(),
     phone: Joi.string().min(10).max(15).trim().strict(),
+    role: Joi.string().valid("user", "admin", "staff"),
     createAt: Joi.date().timestamp("javascript").default(Date.now),
   });
   try {

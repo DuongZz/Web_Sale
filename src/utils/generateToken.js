@@ -10,6 +10,7 @@ export const generateAccessToken = (user) => {
       password: user.password,
       address: user.address,
       phone: user.phone,
+      role: user.role,
     },
     env.SECRET_ACCESS_TOKEN,
     {

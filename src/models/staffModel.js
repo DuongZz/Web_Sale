@@ -9,7 +9,7 @@ const STAFF_COLLECTION_SCHEMA = Joi.object({
   username: Joi.string().required().min(8).max(20).trim().strict(),
   name: Joi.string().required().min(5).max(20).trim().strict(),
   staffCode: Joi.string().required().min(5).max(10).trim().strict(),
-  password: Joi.string().required().min(5).min(20).trim().strict(),
+  password: Joi.string().required().min(5).max(20).trim().strict(),
   orderId: Joi.array()
     .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
     .default([]),
