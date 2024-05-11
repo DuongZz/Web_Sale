@@ -33,6 +33,7 @@ const PRODUCT_COLLECTION_SCHEMA = Joi.object({
   imageList: Joi.array().items([Joi.string().required()]),
   year: Joi.number().required().trim().strict(),
   sold: Joi.number().required().trim().strict(),
+  warranty: Joi.string().trim().strict(),
   slug: Joi.string().required().custom(generateSlug),
   createAt: Joi.date().timestamp("javascript").default(Date.now),
   createAt: Joi.date().timestamp("javascript").default(null),

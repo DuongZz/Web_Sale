@@ -8,3 +8,7 @@ export const typeDevice = [
   "mouse",
   "pc",
 ];
+
+export const status = ["pending", "processing", "completed"];
+export const position = ["rear", "center", "top"];
+export const role = ["user", "admin", "staff"];

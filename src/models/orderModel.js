@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "~/utils/validators";
+import { status } from "~/enum/typeDevice";
 const ORDER_COLLECTION_NAME = "orders";
 const ORDER_COLLECTION_SCHEMA = Joi.object({
   _id: Joi.string()
@@ -12,7 +13,10 @@ const ORDER_COLLECTION_SCHEMA = Joi.object({
     productId: Joi.string().required(),
     quantity: Joi.number().required(),
   }),
-  status: Joi.string().valid("pending", "processing", "completed"),
+  status: Joi.string()
+    .valid(...status)
+    .trim()
+    .strict(),
   createAt: Joi.date().timestamp("javascript").default(Date.now),
   createAt: Joi.date().timestamp("javascript").default(null),
 });
