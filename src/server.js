@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { connectDB, getDB } from "./config/mongodb";
 import { env } from "~/config/environment";
 import app from "./app.js";
+
 dotenv.config();
 const PORT = env.PORT || 6969;
 
