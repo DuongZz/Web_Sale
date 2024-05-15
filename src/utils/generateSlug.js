@@ -1,4 +1,6 @@
-export const generateSlug = (value) => {
-  const slug = slugify(value.name, { lower: true });
+import slugify from "slugify";
+
+export const generateSlug = (name) => {
+  const slug = slugify(name, { lower: true });
   return slug;
 };

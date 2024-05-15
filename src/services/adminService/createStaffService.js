@@ -1,9 +1,9 @@
 import { getDB } from "~/config/mongodb";
 import { staffModel } from "~/models/staffModel";
 import bcrypt from "bcrypt";
-export const createStaffService = async (staffData) => {
+export const createStaffService = async (req) => {
   try {
-    const { username, name, staffCode, password } = staffData.body;
+    const { username, name, staffCode, password } = req.body;
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hashSync(password, salt);
