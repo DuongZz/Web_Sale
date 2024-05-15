@@ -1,29 +1,12 @@
-import { userModel } from "~/models/userModel";
-import { getDB } from "~/config/mongodb";
-import bcrypt from "bcrypt";
+import { StatusCodes } from "http-status-codes";
+import { registerService } from "~/services/authService/registerService";
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
-    const { username, name, email, password, address, phone, role } = req.body;
+    await registerService(req)
 
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = await bcrypt.hashSync(password, salt);
-
-    const newUser = {
-      username,
-      name,
-      email,
-      password: hashedPassword,
-      address,
-      phone,
-      role,
-      accessToken: "",
-      refreshToken: "",
-    };
-    const db = getDB();
-    await db.collection(userModel.USER_COLLECTION_NAME).insertOne(newUser);
-    res.status(201).json({ message: "Registration successful" });
+    res.status(StatusCodes.CREATED).json({ message: "Registration successful" });
   } catch (error) {
-    res.status(401).json({ message: "Registration failed: " + error.message });
+    next(error);
   }
 };

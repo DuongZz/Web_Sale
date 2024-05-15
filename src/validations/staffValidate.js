@@ -1,4 +1,6 @@
+import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
+import ApiError from "~/utils/ApiError";
 
 const validateStaff = async (req, res, next) => {
   const correctCondition = Joi.object({
@@ -6,13 +8,14 @@ const validateStaff = async (req, res, next) => {
     name: Joi.string().required().min(5).max(20).trim().strict(),
     staffCode: Joi.string().required().min(5).max(10).trim().strict(),
     password: Joi.string().required().min(5).max(20).trim().strict(),
-    createAt: Joi.date().timestamp("javascript").default(Date.now),
   });
   try {
     await correctCondition.validateAsync(req.body);
     next();
   } catch (error) {
-    throw error;
+    const errorMessage = new Error(error).message
+    const newError = new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage)
+    next(newError)
   }
 };
 

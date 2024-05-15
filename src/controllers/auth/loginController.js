@@ -1,42 +1,37 @@
-import { userModel } from "~/models/userModel";
-import { getDB } from "~/config/mongodb";
+import { findUserByEmail, findUserById, updateUser } from "~/models/userModel";
 import bcrypt from "bcrypt";
 import {
   generateAccessToken,
   generateRefreshToken,
 } from "~/utils/generateToken";
+import { StatusCodes } from "http-status-codes";
+import ApiError from "~/utils/ApiError";
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    const db = getDB();
-    const user = await db
-      .collection(userModel.USER_COLLECTION_NAME)
-      .findOne({ username });
+    const { email, password } = req.body;
+
+    const user = await findUserByEmail(email)
     if (!user) {
-      return res.status(404).json("Username Not Found");
+      return next(new ApiError(StatusCodes.NOT_FOUND, "User not found"))
     }
+
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res.status(401).json("Wrong Password");
+      return next(new ApiError(StatusCodes.UNAUTHORIZED, "Wrong password"))
     }
     if (user && validPassword) {
       const accessToken = generateAccessToken(user);
       const refreshToken = generateRefreshToken(user);
 
-      await db.collection(userModel.USER_COLLECTION_NAME).updateOne(
-        { username },
-        {
-          $set: {
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-          },
-        }
-      );
-      const updatedUser = await db
-        .collection(userModel.USER_COLLECTION_NAME)
-        .findOne({ username });
-      delete updatedUser.password;
+      await updateUser(user._id,{
+        $set: {
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+        },
+      })
+      const logedUser = await findUserById(user._id)
+      delete logedUser.refreshToken
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: false,
@@ -44,11 +39,13 @@ export const login = async (req, res) => {
         path: "/",
         sameSite: "strict",
       });
-      delete user.password;
 
-      res.status(200).json(updatedUser);
+      res.status(StatusCodes.OK).json({
+        message: "Login successful",
+        logedUser
+      });
     }
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 };

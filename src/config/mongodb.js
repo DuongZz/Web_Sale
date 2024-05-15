@@ -20,3 +20,7 @@ export const getDB = () => {
   if (!databaseInstance) throw new Error("Must connect to Database first!");
   return databaseInstance;
 };
+
+export const CLOSE_DB = async () => {
+  await databaseInstance.close()
+}

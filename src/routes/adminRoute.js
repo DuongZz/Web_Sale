@@ -1,16 +1,10 @@
 import { Router } from "express";
-import { createStaffController } from "~/controllers/adminController/createStaffController";
-import { staffValidation } from "~/validations/staffValidate.js";
-import { checkAdminRole } from "~/middlewares/checkAdminRole";
-import { checkJWT } from "~/middlewares/checkJWT";
-
+import staffRoute from "~/routes/admin/staffRoute.js"
+import adminProdRoute from "./admin/adminProdRoute"; 
 const router = Router();
 
-router.post(
-  "/create-staff-acc",
-  staffValidation.validateStaff,
-  checkJWT,
-  checkAdminRole,
-  createStaffController
-);
+
+router.use('/staff', staffRoute)
+router.use('/product', adminProdRoute)
+
 export default router;

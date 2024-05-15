@@ -1,6 +1,7 @@
+import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import { typeDevice } from "~/enum/typeDevice";
-import { generateSlug } from "~/utils/generateSlug";
+import ApiError from "~/utils/ApiError";
 
 const validateProduct = async (req, res, next) => {
   const correctCondition = Joi.object({
@@ -41,7 +42,6 @@ const validateProduct = async (req, res, next) => {
     year: Joi.number().required().strict(),
     sold: Joi.number().required().strict(),
     warranty: Joi.string().trim().strict(),
-    slug: Joi.string().custom(generateSlug),
   });
 
   try {
@@ -56,8 +56,9 @@ const validateProduct = async (req, res, next) => {
     await correctCondition.validateAsync(req.body);
     next();
   } catch (error) {
-    console.error("Error parsing JSON:", error);
-    res.status(400).json({ error: "Invalid JSON data" });
+    const errorMessage = new Error(error).message
+    const newError = new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage)
+    next(newError)
   }
 };
 

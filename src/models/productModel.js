@@ -2,13 +2,11 @@ import Joi from "joi";
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "~/utils/validators";
 import { generateSlug } from "~/utils/generateSlug";
 import { typeDevice } from "~/enum/typeDevice";
+import { getDB } from "~/config/mongodb";
+import { ObjectId } from "mongodb";
 
 const PRODUCT_COLLECTION_NAME = "products";
 const PRODUCT_COLLECTION_SCHEMA = Joi.object({
-  _id: Joi.string()
-    .required()
-    .pattern(OBJECT_ID_RULE)
-    .message(OBJECT_ID_RULE_MESSAGE),
   deviceCode: Joi.string().required().trim().strict(),
   name: Joi.string().required().trim().strict(),
   price: Joi.number().required().strict(),
@@ -56,3 +54,32 @@ export const productModel = {
   PRODUCT_COLLECTION_NAME,
   PRODUCT_COLLECTION_SCHEMA,
 };
+
+const validataBeforeCreate = async (data) => { 
+  try {
+    return await PRODUCT_COLLECTION_SCHEMA.validateAsync(data , { abortEarly: false})
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const createProduct = async (data) => {
+  try {
+    const validatedData = await validataBeforeCreate(data)
+    return await getDB()
+      .collection(PRODUCT_COLLECTION_NAME)
+      .insertOne(validatedData);
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const findProductById = async (id) => {
+  try {
+    return await getDB()
+      .collection(PRODUCT_COLLECTION_NAME)
+      .findOne({_id: new ObjectId(id)});
+  } catch (error) {
+    throw new Error(error)
+  }
+}
