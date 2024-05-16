@@ -12,4 +12,8 @@ export const env = {
   CLOUD_NAME: process.env.CLOUD_NAME,
   API_KEY: process.env.API_KEY,
   API_SECRET: process.env.API_SECRET,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_SECRET: process.env.GOOGLE_SECRET,
+  GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI,
+  REACT_GEARVN_CLONE_HOST: process.env.REACT_GEARVN_CLONE_HOST
 };
