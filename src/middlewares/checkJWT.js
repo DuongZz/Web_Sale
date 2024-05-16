@@ -1,22 +1,46 @@
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
+import { env } from "~/config/environment";
+import { updateUser } from "~/models/userModel";
 import ApiError from "~/utils/ApiError";
+import { generateAccessToken } from "~/utils/generateToken";
 
-export const checkJWT = (req, res, next) => {
-  const token = req.headers.authorization; // sửa thành 'authorization' với chữ 'a' thường
-  if (token) {
-    const accessToken = token.split(" ")[1];
-    jwt.verify(accessToken, process.env.SECRET_ACCESS_TOKEN, (err, user) => {
+export const checkJWT =  (req, res, next) => {
+  const accessToken = req.cookies["accessToken"];
+  const refreshToken = req.cookies["refreshToken"];
+  if (accessToken && refreshToken) {
+    jwt.verify(accessToken, env.SECRET_ACCESS_TOKEN, (err, user) => {
       if (err) {
-        const error = new ApiError(StatusCodes.UNAUTHORIZED, "Invalid token");
-        next(error);
+        jwt.verify(refreshToken, env.SECRET_REFRESH_TOKEN, (err,user) => {
+          if (err) {
+              updateUser({refreshToken: refreshToken},{
+                $set: {
+                  accessToken: undefined,
+                  refreshToken: undefined,
+                },
+              }, {}).then(()=> res.status(StatusCodes.UNAUTHORIZED).json({ message: "Refresh and access token are expried"})).catch(()=> next(err));
+          }
+          else {
+
+            const newAccesTonken = generateAccessToken(user);
+
+            res.cookie("accessToken", newAccesTonken, {
+              path: "/",
+              sameSite: "None",
+              secure: true,
+              httpOnly: true,
+              partitioned: true,
+            });
+
+            return res.status(StatusCodes.OK).json({ message: "Refresh access token successfully"})
+          }
+        });
       } else {
         req.user = user;
         next();
       }
     });
   } else {
-    const error = new ApiError(StatusCodes.UNAUTHORIZED, "Token is missing");
-    next(error);
+    next(new ApiError(StatusCodes.UNAUTHORIZED, "Token is missing"));
   }
 };

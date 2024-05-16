@@ -32,17 +32,19 @@ export const login = async (req, res, next) => {
       }, {})
 
       res.cookie("refreshToken", refreshToken, {
-        httpOnly: false,
-        secure: false,
         path: "/",
-        sameSite: "strict",
+        sameSite: "None",
+        secure: true,
+        httpOnly: true,
+        partitioned: true,
       });
 
       res.cookie("accessToken", accessToken, {
-        httpOnly: false,
-        secure: false,
         path: "/",
-        sameSite: "strict",
+        sameSite: "None",
+        secure: true,
+        httpOnly: true,
+        partitioned: true,
       });
 
       res.status(StatusCodes.OK).json({
