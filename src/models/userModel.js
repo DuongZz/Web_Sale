@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi, { options } from "joi";
 import { ObjectId } from "mongodb";
 import { getDB } from "~/config/mongodb";
 import { checkUnique } from "~/utils/checkUnique";
@@ -70,11 +70,11 @@ export const findUserByEmail = async (email) => {
   }
 }
 
-export const updateUser = async (_id, doc) => { 
+export const updateUser = async (filter, doc, options) => { 
   try {
     return await getDB()
       .collection(USER_COLLECTION_NAME)
-      .updateOne({_id: new ObjectId(_id)}, doc);
+      .updateOne(filter, doc, options);
   } catch (error) {
     throw new Error(error)
   }

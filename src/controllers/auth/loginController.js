@@ -1,4 +1,4 @@
-import { findUserByEmail, findUserById, updateUser } from "~/models/userModel";
+import { findUserByEmail, updateUser } from "~/models/userModel";
 import bcrypt from "bcrypt";
 import {
   generateAccessToken,
@@ -24,25 +24,31 @@ export const login = async (req, res, next) => {
       const accessToken = generateAccessToken(user);
       const refreshToken = generateRefreshToken(user);
 
-      await updateUser(user._id,{
+      await updateUser({_id: user._id},{
         $set: {
           accessToken: accessToken,
           refreshToken: refreshToken,
         },
-      })
-      const logedUser = await findUserById(user._id)
-      delete logedUser.refreshToken
+      }, {})
 
       res.cookie("refreshToken", refreshToken, {
-        httpOnly: false,
-        secure: false,
         path: "/",
-        sameSite: "strict",
+        sameSite: "None",
+        secure: true,
+        httpOnly: true,
+        partitioned: true,
+      });
+
+      res.cookie("accessToken", accessToken, {
+        path: "/",
+        sameSite: "None",
+        secure: true,
+        httpOnly: true,
+        partitioned: true,
       });
 
       res.status(StatusCodes.OK).json({
         message: "Login successful",
-        logedUser
       });
     }
   } catch (error) {

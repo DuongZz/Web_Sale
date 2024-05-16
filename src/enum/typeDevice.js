@@ -10,5 +10,4 @@ export const typeDevice = [
 ];
 
 export const status = ["pending", "processing", "completed"];
-export const position = ["rear", "center", "top"];
 export const role = ["admin", "staff"];
