@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"; 
 import { env } from "~/config/environment";
 import { updateUser } from "~/models/userModel";
 import ApiError from "~/utils/ApiError";
@@ -27,12 +27,12 @@ export const checkJWT =  (req, res, next) => {
             res.cookie("accessToken", newAccesTonken, {
               path: "/",
               sameSite: "None",
-              secure: true,
+              secure: env.COOKIE_IS_USE_SECURE,
               httpOnly: true,
               partitioned: true,
             });
 
-            return res.status(StatusCodes.OK).json({ message: "Refresh access token successfully"})
+            return res.status(StatusCodes.UNAUTHORIZED).json({ message: "Refresh access token successfully"})
           }
         });
       } else {

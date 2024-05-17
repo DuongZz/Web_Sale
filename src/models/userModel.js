@@ -15,7 +15,6 @@ const USER_COLLECTION_SCHEMA = Joi.object({
     return email
   }),
   password: Joi.string().required().trim().strict(),
-  address: Joi.string().trim().strict(),
   phone: Joi.string().trim().strict(),
   role: Joi.string().default('user'),
   accessToken: Joi.string().trim().strict(),
