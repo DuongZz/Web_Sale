@@ -6,6 +6,7 @@ import {
 } from "~/utils/generateToken";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "~/utils/ApiError";
+import { env } from "~/config/environment";
 
 export const login = async (req, res, next) => {
   try {
@@ -26,7 +27,6 @@ export const login = async (req, res, next) => {
 
       await updateUser({_id: user._id},{
         $set: {
-          accessToken: accessToken,
           refreshToken: refreshToken,
         },
       }, {})
@@ -34,7 +34,7 @@ export const login = async (req, res, next) => {
       res.cookie("refreshToken", refreshToken, {
         path: "/",
         sameSite: "None",
-        secure: true,
+        secure: env.COOKIE_IS_USE_SECURE,
         httpOnly: true,
         partitioned: true,
       });
@@ -42,7 +42,7 @@ export const login = async (req, res, next) => {
       res.cookie("accessToken", accessToken, {
         path: "/",
         sameSite: "None",
-        secure: true,
+        secure: env.COOKIE_IS_USE_SECURE,
         httpOnly: true,
         partitioned: true,
       });

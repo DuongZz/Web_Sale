@@ -27,7 +27,6 @@ export const oauthGoogle = async (req, res, next) => {
 
       await updateUser({_id: user.insertedId},{
         $set: {
-          accessToken: accessToken,
           refreshToken: refreshToken,
         },
       }, {})
@@ -35,7 +34,7 @@ export const oauthGoogle = async (req, res, next) => {
       res.cookie("refreshToken", refreshToken, {
         path: "/",
         sameSite: "None",
-        secure: true,
+        secure: env.COOKIE_IS_USE_SECURE,
         httpOnly: true,
         partitioned: true,
       });
@@ -43,7 +42,7 @@ export const oauthGoogle = async (req, res, next) => {
       res.cookie("accessToken", accessToken, {
         path: "/",
         sameSite: "None",
-        secure: true,
+        secure: env.COOKIE_IS_USE_SECURE,
         httpOnly: true,
         partitioned: true,
       });
