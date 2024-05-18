@@ -2,7 +2,7 @@ import { Router } from "express";
 import { checkAdminRole } from "~/middlewares/checkAdminRole";
 import { checkJWT } from "~/middlewares/checkJWT";
 import { productValidation } from "~/validations/productValidate";
-import { postProductController } from "~/controllers/admin/product/postProductController";
+import { postProductController } from "~/controllers/admin/postProductController";
 import { upload } from "~/providers/storageProduct";
 const router = Router();
 router.post(
