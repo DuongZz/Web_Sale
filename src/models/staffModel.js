@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { ObjectId } from "mongodb";
 import { getDB } from "~/config/mongodb";
+import { role } from "~/enum/typeDevice";
 import { checkUnique } from "~/utils/checkUnique";
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "~/utils/validators";
 // định nghĩa schema and validate
@@ -21,6 +22,7 @@ const STAFF_COLLECTION_SCHEMA = Joi.object({
     } 
     return staffCode
   }),
+  role: Joi.string().valid(...role),
   password: Joi.string().required().trim().strict(),
   orderId: Joi.array()
     .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
@@ -39,7 +41,7 @@ const validataBeforeCreate = async (data) => {
   try {
     return await STAFF_COLLECTION_SCHEMA.validateAsync(data , { abortEarly: false})
   } catch (error) {
-    throw new Error(error)
+    throw error
   }
 }
 
@@ -51,7 +53,7 @@ export const createStaff = async (data) => {
       .collection(STAFF_COLLECTION_NAME)
       .insertOne(validatedData);
   } catch (error) {
-    throw new Error(error)
+    throw error
   }
 }
 
@@ -61,7 +63,7 @@ export const findStaffById = async (id) => {
       .collection(STAFF_COLLECTION_NAME)
       .findOne({_id: new ObjectId(id)},{ projection: { password: 0 } });
   } catch (error) {
-    throw new Error(error)
+    throw error
   }
 }
 

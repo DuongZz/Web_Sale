@@ -46,7 +46,7 @@ const PRODUCT_COLLECTION_SCHEMA = Joi.object({
   warranty: Joi.string().trim().strict(),
   slug: Joi.string().custom(generateSlug),
   createAt: Joi.date().timestamp("javascript").default(Date.now),
-  createAt: Joi.date().timestamp("javascript").default(null),
+  updateAt: Joi.date().timestamp("javascript").default(null),
   _destroy: Joi.boolean().default(false),
 });
 
@@ -59,7 +59,7 @@ const validataBeforeCreate = async (data) => {
   try {
     return await PRODUCT_COLLECTION_SCHEMA.validateAsync(data , { abortEarly: false})
   } catch (error) {
-    throw new Error(error)
+    throw error
   }
 }
 
@@ -70,7 +70,7 @@ export const createProduct = async (data) => {
       .collection(PRODUCT_COLLECTION_NAME)
       .insertOne(validatedData);
   } catch (error) {
-    throw new Error(error)
+    throw error
   }
 }
 
@@ -80,6 +80,6 @@ export const findProductById = async (id) => {
       .collection(PRODUCT_COLLECTION_NAME)
       .findOne({_id: new ObjectId(id)});
   } catch (error) {
-    throw new Error(error)
+    throw error
   }
 }

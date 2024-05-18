@@ -17,7 +17,6 @@ const USER_COLLECTION_SCHEMA = Joi.object({
   password: Joi.string().required().trim().strict(),
   phone: Joi.string().trim().strict(),
   role: Joi.string().default('user'),
-  accessToken: Joi.string().trim().strict(),
   refreshToken: Joi.string().trim().strict(),
   orderId: Joi.array()
     .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).trim().strict())
@@ -34,7 +33,7 @@ const validataBeforeCreate = async (data) => {
   try {
     return await USER_COLLECTION_SCHEMA.validateAsync(data , { abortEarly: false})
   } catch (error) {
-    throw new Error(error)
+    throw error
   }
 }
 
@@ -45,7 +44,7 @@ export const createUser = async (data) => {
       .collection(USER_COLLECTION_NAME)
       .insertOne(validatedData);
   } catch (error) {
-    throw new Error(error)
+    throw error
   }
 }
 
@@ -55,7 +54,7 @@ export const findUserById = async (id) => {
       .collection(USER_COLLECTION_NAME)
       .findOne({_id: new ObjectId(id)}, { projection: { password: 0 } });
   } catch (error) {
-    throw new Error(error)
+    throw error
   }
 }
 
@@ -65,7 +64,7 @@ export const findUserByEmail = async (email) => {
       .collection(USER_COLLECTION_NAME)
       .findOne({email});
   } catch (error) {
-    throw new Error(error)
+    throw error
   }
 }
 
@@ -75,6 +74,6 @@ export const updateUser = async (filter, doc, options) => {
       .collection(USER_COLLECTION_NAME)
       .updateOne(filter, doc, options);
   } catch (error) {
-    throw new Error(error)
+    throw error
   }
 }
