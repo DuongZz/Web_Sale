@@ -1,23 +1,28 @@
 import { StatusCodes } from "http-status-codes";
-import jwt from "jsonwebtoken"; 
+import jwt from "jsonwebtoken";
 import { env } from "~/config/environment";
 import { updateStaff } from "~/models/staffModel";
 import ApiError from "~/utils/ApiError";
 import { generateAccessToken } from "~/utils/generateToken";
 
-export const checkJWTAdmin =  (req, res, next) => {
+export const checkJWTAdmin = (req, res, next) => {
   const accessToken = req.cookies["accessToken"];
   const refreshToken = req.cookies["refreshToken"];
   if (accessToken && refreshToken) {
     jwt.verify(accessToken, env.SECRET_ACCESS_TOKEN, (err, user) => {
       if (err) {
-        jwt.verify(refreshToken, env.SECRET_REFRESH_TOKEN, (err,user) => {
+        jwt.verify(refreshToken, env.SECRET_REFRESH_TOKEN, (err, user) => {
           if (err) {
-              updateStaff({refreshToken: refreshToken},{
+            updateStaff(
+              { refreshToken: refreshToken },
+              {
                 $set: {
                   refreshToken: undefined,
                 },
-              }, {}).then(()=> {
+              },
+              {}
+            )
+              .then(() => {
                 res.clearCookie("refreshToken", {
                   path: "/",
                   sameSite: "None",
@@ -31,11 +36,13 @@ export const checkJWTAdmin =  (req, res, next) => {
                   secure: true,
                   httpOnly: true,
                   partitioned: true,
-                });  
-                res.status(StatusCodes.UNAUTHORIZED).json({ message: "Refresh and access token are expried"})
-              }).catch(()=> next(err));
-          }
-          else {
+                });
+                res
+                  .status(StatusCodes.UNAUTHORIZED)
+                  .json({ message: "Refresh and access token are expried" });
+              })
+              .catch(() => next(err));
+          } else {
             const newAccesTonken = generateAccessToken(user);
             res.cookie("accessToken", newAccesTonken, {
               path: "/",
@@ -45,7 +52,9 @@ export const checkJWTAdmin =  (req, res, next) => {
               partitioned: true,
             });
 
-            return res.status(StatusCodes.UNAUTHORIZED).json({ message: "Refresh access token successfully"})
+            return res
+              .status(StatusCodes.UNAUTHORIZED)
+              .json({ message: "Refresh access token successfully" });
           }
         });
       } else {
