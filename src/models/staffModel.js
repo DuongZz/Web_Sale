@@ -67,3 +67,12 @@ export const findStaffById = async (id) => {
   }
 }
 
+export const updateStaff = async (filter, doc, options) => { 
+  try {
+    return await getDB()
+      .collection(STAFF_COLLECTION_NAME)
+      .updateOne(filter, doc, options);
+  } catch (error) {
+    throw error
+  }
+}

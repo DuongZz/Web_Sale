@@ -15,7 +15,6 @@ export const checkJWT =  (req, res, next) => {
           if (err) {
               updateUser({refreshToken: refreshToken},{
                 $set: {
-                  accessToken: undefined,
                   refreshToken: undefined,
                 },
               }, {}).then(()=> res.status(StatusCodes.UNAUTHORIZED).json({ message: "Refresh and access token are expried"})).catch(()=> next(err));
