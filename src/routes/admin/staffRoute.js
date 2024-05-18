@@ -7,21 +7,14 @@ import { getStaffListController } from "~/controllers/admin/getStaffListControll
 
 const router = Router();
 
-router.post(
-  "/",
-  staffValidation.validateStaff,
-  createStaffController
-);
+router.post("/", staffValidation.validateStaff, createStaffController);
 
-router.get("/", getStaffListController)
+router.get("/", getStaffListController);
 
 router.patch("/:id", updateStaffController);
 
-router.delete("/:id", deleteStaffController)
+router.delete("/:id", deleteStaffController);
 
-router.get("/:id")
-
-
-
+router.get("/:id");
 
 export default router;

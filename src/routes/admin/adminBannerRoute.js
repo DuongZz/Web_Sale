@@ -5,9 +5,11 @@ import { updateBannerController } from "~/controllers/admin/updateBannerControll
 import { uploadBanner } from "~/providers/storageProduct";
 const router = Router();
 
-router.post("/", 
+router.post(
+  "/",
   uploadBanner.fields([{ name: "image", maxCount: 1 }]),
-  createBannerController);
+  createBannerController
+);
 
 router.patch(
   "/:id",
@@ -15,9 +17,5 @@ router.patch(
   updateBannerController
 );
 
-router.delete(
-  "/:id",
-  deleteBannerController
-  
-);
+router.delete("/:id", deleteBannerController);
 export default router;
