@@ -11,5 +11,4 @@ router.post(
   postProductController
 );
 
-
 export default router;
