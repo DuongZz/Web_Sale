@@ -1,14 +1,15 @@
 import { StatusCodes } from "http-status-codes";
-import { findUserById } from "~/models/userModel";
+import { findStaffById } from "~/models/staffModel";
 
 export const getMe = async (req, res, next) => {
   try {
-    
     if(req.user) {
-      const user = await findUserById(req.user.id)
+      const user = await findStaffById(req.user.id)
 
+      delete staff.password
       delete user.refreshToken
-
+      delete user.orderId
+      
       res.status(StatusCodes.OK).json({
         message: 'Get user information successfully',
         user

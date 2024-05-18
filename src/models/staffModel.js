@@ -28,6 +28,7 @@ const STAFF_COLLECTION_SCHEMA = Joi.object({
     .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
     .default([]),
   createAt: Joi.date().timestamp("javascript").default(Date.now),
+  _destroy: Joi.boolean().default(false)
 });
 
 export const staffModel = {
@@ -81,6 +82,16 @@ export const updateStaff = async (filter, doc, options) => {
     return await getDB()
       .collection(STAFF_COLLECTION_NAME)
       .updateOne(filter, doc, options);
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getStaff = async (query) => { 
+  try {
+    return await getDB()
+      .collection(STAFF_COLLECTION_NAME)
+      .find(query).toArray();
   } catch (error) {
     throw error
   }
