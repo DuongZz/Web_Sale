@@ -22,7 +22,7 @@ const STAFF_COLLECTION_SCHEMA = Joi.object({
     } 
     return staffCode
   }),
-  role: Joi.string().valid(...role),
+  role: Joi.string().valid(...role).default("staff"),
   password: Joi.string().required().trim().strict(),
   orderId: Joi.array()
     .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
@@ -62,6 +62,15 @@ export const findStaffById = async (id) => {
     return await getDB()
       .collection(STAFF_COLLECTION_NAME)
       .findOne({_id: new ObjectId(id)},{ projection: { password: 0 } });
+  } catch (error) {
+    throw error
+  }
+}
+export const findStaffByUserName = async (username) => {
+  try {
+    return await getDB()
+      .collection(STAFF_COLLECTION_NAME)
+      .findOne({username: username});
   } catch (error) {
     throw error
   }
