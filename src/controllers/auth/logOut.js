@@ -6,7 +6,6 @@ export const logout = async (req, res, next) => {
     if (req.user)
       await updateUser({_id: new ObjectId(req.user.id)},{
         $set: {
-          accessToken: undefined,
           refreshToken: undefined,
         },
       }, {})
