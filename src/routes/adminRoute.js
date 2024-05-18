@@ -10,13 +10,13 @@ import { rejectUser } from "~/middlewares/rejectUser.js";
 const router = Router();
 
 router.use('/auth',adminAuthRoute)
-// router.use(checkJWTAdmin)
-// router.use(rejectUser)
+router.use(checkJWTAdmin)
+router.use(rejectUser)
 router.use('/product', adminProdRoute)
 router.use('/banner', adminBannerRoute)
 router.use('/promotion', adminPromotionPolicyRoute)
 
-// router.use(checkAdminRole)
+router.use(checkAdminRole)
 router.use('/staff', staffRoute)
 
 export default router;
