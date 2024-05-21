@@ -7,6 +7,7 @@ import morgan from "morgan";
 import { errorHandlingMiddleware } from "./middlewares/errorHandlingMiddleware";
 import { corsConfig } from "./config/cors";
 
+
 const app = express();
 
 app.use(cors(
