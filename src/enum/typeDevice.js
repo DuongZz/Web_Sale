@@ -3,11 +3,12 @@ export const typeDevice = [
   "Component",
   "Headphone",
   "Keyboard",
-  "laptop",
-  "monitor",
-  "mouse",
-  "pc",
+  "Laptop",
+  "Monitor",
+  "Mouse",
+  "Pc",
 ];
 
+export const bannerPosition = ["top", "rear", "center"];
 export const status = ["pending", "processing", "completed"];
 export const role = ["admin", "staff"];

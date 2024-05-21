@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { postProductService } from "~/services/adminService/product/postProductService";
+import { postProductService } from "~/services/adminService/postProductService";
 
 export const postProductController = async (req, res, next) => {
   try {

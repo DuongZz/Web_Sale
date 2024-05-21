@@ -12,9 +12,9 @@ const ORDER_COLLECTION_SCHEMA = Joi.object({
   status: Joi.string()
     .valid(...status)
     .trim()
-    .strict(),
+    .strict().default("pending"),
   createAt: Joi.date().timestamp("javascript").default(Date.now),
-  createAt: Joi.date().timestamp("javascript").default(null),
+  updateAt: Joi.date().timestamp("javascript").default(null),
 });
 
 export const orderModel = {

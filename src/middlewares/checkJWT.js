@@ -15,10 +15,25 @@ export const checkJWT =  (req, res, next) => {
           if (err) {
               updateUser({refreshToken: refreshToken},{
                 $set: {
-                  accessToken: undefined,
                   refreshToken: undefined,
                 },
-              }, {}).then(()=> res.status(StatusCodes.UNAUTHORIZED).json({ message: "Refresh and access token are expried"})).catch(()=> next(err));
+              }, {}).then(()=> {
+                res.clearCookie("refreshToken", {
+                  path: "/",
+                  sameSite: "None",
+                  secure: true,
+                  httpOnly: true,
+                  partitioned: true,
+                });
+                res.clearCookie("accessToken", {
+                  path: "/",
+                  sameSite: "None",
+                  secure: true,
+                  httpOnly: true,
+                  partitioned: true,
+                });  
+                res.status(StatusCodes.UNAUTHORIZED).json({ message: "Refresh and access token are expried"})
+              }).catch(()=> next(err));
           }
           else {
 

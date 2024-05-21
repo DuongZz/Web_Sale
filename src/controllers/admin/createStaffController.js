@@ -1,6 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { createStaffService } from "~/services/adminService/staff/createStaffService";
-
+import { createStaffService } from "~/services/adminService/createStaffService";
 
 export const createStaffController = async (req, res, next) => {
   try {
@@ -10,6 +9,6 @@ export const createStaffController = async (req, res, next) => {
       staff: newStaff,
     });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };

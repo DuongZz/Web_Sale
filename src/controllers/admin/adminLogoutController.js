@@ -1,10 +1,10 @@
 import { StatusCodes } from "http-status-codes";
 import { ObjectId } from "mongodb";
-import { updateUser } from "~/models/userModel";
+import { updateStaff } from "~/models/staffModel";
 export const logout = async (req, res, next) => {
   try {
     if (req.user)
-      await updateUser({_id: new ObjectId(req.user.id)},{
+      await updateStaff({_id: new ObjectId(req.user.id)},{
         $set: {
           refreshToken: undefined,
         },

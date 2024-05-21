@@ -5,15 +5,13 @@ import cookieParser from "cookie-parser";
 import router from "./routes";
 import morgan from "morgan";
 import { errorHandlingMiddleware } from "./middlewares/errorHandlingMiddleware";
-import { env } from "./config/environment";
+import { corsConfig } from "./config/cors";
+
 
 const app = express();
 
 app.use(cors(
-  {
-    origin: [env.REACT_GEARVN_CLONE_HOST,],
-    credentials: true
-  }
+  corsConfig
 ))
 
 app.use(express.json());

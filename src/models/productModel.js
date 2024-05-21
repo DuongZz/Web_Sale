@@ -1,5 +1,4 @@
 import Joi from "joi";
-import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "~/utils/validators";
 import { generateSlug } from "~/utils/generateSlug";
 import { typeDevice } from "~/enum/typeDevice";
 import { getDB } from "~/config/mongodb";
@@ -46,7 +45,7 @@ const PRODUCT_COLLECTION_SCHEMA = Joi.object({
   warranty: Joi.string().trim().strict(),
   slug: Joi.string().custom(generateSlug),
   createAt: Joi.date().timestamp("javascript").default(Date.now),
-  createAt: Joi.date().timestamp("javascript").default(null),
+  updateAt: Joi.date().timestamp("javascript").default(null),
   _destroy: Joi.boolean().default(false),
 });
 
@@ -55,31 +54,75 @@ export const productModel = {
   PRODUCT_COLLECTION_SCHEMA,
 };
 
-const validataBeforeCreate = async (data) => { 
+const validataBeforeCreate = async (data) => {
   try {
-    return await PRODUCT_COLLECTION_SCHEMA.validateAsync(data , { abortEarly: false})
+    return await PRODUCT_COLLECTION_SCHEMA.validateAsync(data, {
+      abortEarly: false,
+    });
   } catch (error) {
-    throw new Error(error)
+    throw error;
   }
-}
+};
 
 export const createProduct = async (data) => {
   try {
-    const validatedData = await validataBeforeCreate(data)
+    const validatedData = await validataBeforeCreate(data);
     return await getDB()
       .collection(PRODUCT_COLLECTION_NAME)
       .insertOne(validatedData);
   } catch (error) {
-    throw new Error(error)
+    throw error;
   }
-}
+};
 
 export const findProductById = async (id) => {
   try {
     return await getDB()
       .collection(PRODUCT_COLLECTION_NAME)
-      .findOne({_id: new ObjectId(id)});
+      .findOne({ _id: new ObjectId(id) });
   } catch (error) {
-    throw new Error(error)
+    throw error;
   }
-}
+};
+
+export const findAllProduct = async () => {
+  try {
+    return await getDB().collection(PRODUCT_COLLECTION_NAME).find().toArray();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const findProductBySlug = async (slug) => {
+  try {
+    const db = getDB();
+    const mainProduct = await db
+      .collection(PRODUCT_COLLECTION_NAME)
+      .findOne({ slug: slug });
+    const relatedProducts = await db
+      .collection(PRODUCT_COLLECTION_NAME)
+      .find({
+        brand: mainProduct.brand,
+        _id: { $ne: mainProduct._id },
+      })
+      .limit(4)
+      .toArray();
+
+    return { mainProduct, relatedProducts };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const findTopSaleProduct = async () => {
+  try {
+    return await getDB()
+      .collection(PRODUCT_COLLECTION_NAME)
+      .find()
+      .sort({ sold: -1 })
+      .limit(10)
+      .toArray();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
