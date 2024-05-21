@@ -6,7 +6,7 @@ const WARRANTY_COLLECTION_SCHEMA = Joi.object({
   orderId: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).trim().strict(),
   imageURL: Joi.string().required().trim().strict(),
   createAt: Joi.date().timestamp("javascript").default(Date.now),
-  createAt: Joi.date().timestamp("javascript").default(null),
+  updateAt: Joi.date().timestamp("javascript").default(null),
   _destroy: Joi.boolean().default(false),
 });
 

@@ -1,11 +1,13 @@
 import Joi from "joi";
-import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "~/utils/validators";
+import { ObjectId } from "mongodb";
+import { getDB } from "~/config/mongodb";
+import { bannerPosition } from "~/enum/typeDevice.js"
 const BANNER_COLLECTION_NAME = "banners";
 const BANNER_COLLECTION_SCHEMA = Joi.object({
-  productId: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).trim().strict(),
-  imageURL: Joi.array().items(Joi.string().required().trim().strict()).default([]),
+  imageURL: Joi.string().required().trim().strict(),
+  position: Joi.string().required().trim().strict().valid(...bannerPosition),
   createAt: Joi.date().timestamp("javascript").default(Date.now),
-  createAt: Joi.date().timestamp("javascript").default(null),
+  updateAt: Joi.date().timestamp("javascript").default(null),
   _destroy: Joi.boolean().default(false),
 });
 
@@ -15,3 +17,58 @@ export const bannerModel = {
 };
 
 
+const validataBeforeCreate = async (data) => { 
+  try {
+    return await BANNER_COLLECTION_SCHEMA.validateAsync(data , { abortEarly: false})
+  } catch (error) {
+    throw error
+  }
+}
+
+
+export const createBanner = async (data) => {
+  try {
+    const validatedData = await validataBeforeCreate(data)
+    return await getDB()
+      .collection(BANNER_COLLECTION_NAME)
+      .insertOne(validatedData);
+  } catch (error) {
+    throw error
+  }
+}
+
+export const findBannerById = async (id) => {
+  try {
+    return await getDB()
+      .collection(BANNER_COLLECTION_NAME)
+      .findOne({_id: new ObjectId(id)});
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getBanner = async (query, limit) => {
+  try {
+    
+    if(limit!==-1) 
+      return await getDB()
+        .collection(BANNER_COLLECTION_NAME)
+        .find(query).limit(limit).toArray()
+    else 
+      return await getDB()
+        .collection(BANNER_COLLECTION_NAME)
+        .find(query).toArray()
+  } catch (error) {
+    throw error
+  }
+}
+
+export const updateBanner = async (filter, doc, options) => { 
+  try {
+    return await getDB()
+      .collection(BANNER_COLLECTION_NAME)
+      .updateOne(filter, doc, options);
+  } catch (error) {
+    throw error
+  }
+}

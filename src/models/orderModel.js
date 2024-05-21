@@ -14,7 +14,7 @@ const ORDER_COLLECTION_SCHEMA = Joi.object({
     .trim()
     .strict(),
   createAt: Joi.date().timestamp("javascript").default(Date.now),
-  createAt: Joi.date().timestamp("javascript").default(null),
+  updateAt: Joi.date().timestamp("javascript").default(null),
 });
 
 export const orderModel = {

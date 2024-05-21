@@ -9,5 +9,6 @@ export const typeDevice = [
   "pc",
 ];
 
+export const bannerPosition = ["top", "rear", "center"];
 export const status = ["pending", "processing", "completed"];
 export const role = ["admin", "staff"];
