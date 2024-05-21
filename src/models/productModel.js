@@ -60,7 +60,7 @@ const validataBeforeCreate = async (data) => {
       abortEarly: false,
     });
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
@@ -71,7 +71,7 @@ export const createProduct = async (data) => {
       .collection(PRODUCT_COLLECTION_NAME)
       .insertOne(validatedData);
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
@@ -81,7 +81,7 @@ export const findProductById = async (id) => {
       .collection(PRODUCT_COLLECTION_NAME)
       .findOne({ _id: new ObjectId(id) });
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
