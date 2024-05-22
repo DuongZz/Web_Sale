@@ -8,14 +8,14 @@ export const updateBannerService = async (req) => {
   try {
     const id = req.params.id;
     const position = req?.body?.position || null
+    const color = req?.body?.color || null
     const images = req?.files?.["image"] || [];
     const banner = await findBannerById(id);
-    if(!banner) throw new ApiError(StatusCodes.NOT_FOUND, "Banner not found");
-
+    if(!banner) throw new ApiError(StatusCodes.NOT_FOUND, "Banner not found");  
     let doc0 = {}
-
-
-    if(position && bannerPosition.includes(position)) doc0.position = position
+    if (color) doc0.color = color
+    if (position && bannerPosition.includes(position))
+      doc0.position = position;
 
     if (images && images.length == 1 ) {
       const uploadPromises = images.map((image) =>

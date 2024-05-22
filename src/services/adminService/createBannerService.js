@@ -3,12 +3,12 @@ import { createBanner, findBannerById } from "~/models/bannerModel";
 
 export const createBannerService = async (req) => {
   try {
-    const position = req.body.position 
+    const position = req.body.position
+    const color = req.body.color 
     const images = req.files["image"];
     const data = {
-      position
+      position, color
     }
-
     if (images && images.length == 1 ) {
       const uploadPromises = images.map((image) =>
         cloudinary.uploader.upload(image.path, {
