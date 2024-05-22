@@ -1,10 +1,9 @@
-import { findAllProduct, findTopSaleProduct } from "~/models/productModel";
+import { findAllProduct } from "~/models/productModel";
 
 export const findAllProductsService = async () => {
   try {
     const product = await findAllProduct();
-    const topSale = await findTopSaleProduct();
-    return { product, topSale };
+    return product;
   } catch (error) {
     throw error;
   }
