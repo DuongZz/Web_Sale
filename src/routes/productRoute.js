@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { findAllProductController } from "~/controllers/product/findAllProductController";
+import { getProductController } from "~/controllers/product/getProductController";
 import { getInfoProductController } from "~/controllers/product/getInfoProductController";
 
 const router = Router();
-
 router.get("/:slug", getInfoProductController);
-router.get("/", findAllProductController);
+router.get("/", getProductController);
+
 export default router;

@@ -20,52 +20,54 @@ export const promotionModel = {
   PROMOTION_COLLECTION_SCHEMA,
 };
 
-const validataBeforeCreate = async (data) => { 
+const validataBeforeCreate = async (data) => {
   try {
-    return await PROMOTION_COLLECTION_SCHEMA.validateAsync(data , { abortEarly: false})
+    return await PROMOTION_COLLECTION_SCHEMA.validateAsync(data, {
+      abortEarly: false,
+    });
   } catch (error) {
-    throw error
+    throw error;
   }
-}
-
+};
 
 export const createPromotionPolicy = async (data) => {
   try {
-    const validatedData = await validataBeforeCreate(data)
+    const validatedData = await validataBeforeCreate(data);
     return await getDB()
       .collection(PROMOTION_COLLECTION_NAME)
       .insertOne(validatedData);
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};
 
 export const findPromotionPolicyById = async (id) => {
   try {
     return await getDB()
       .collection(PROMOTION_COLLECTION_NAME)
-      .findOne({_id: new ObjectId(id)});
+      .findOne({ _id: new ObjectId(id) });
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};
 
-export const getPromotionPolicy= async (query) => {
+export const getPromotionPolicy = async (query) => {
   try {
     return await getDB()
       .collection(PROMOTION_COLLECTION_NAME)
-      .find(query).toArray()
+      .find(query)
+      .toArray();
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};
 
-export const updatePromotionPolicy = async (filter, doc, options) => { 
+export const updatePromotionPolicy = async (filter, doc, options) => {
   try {
     return await getDB()
       .collection(PROMOTION_COLLECTION_NAME)
       .updateOne(filter, doc, options);
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};

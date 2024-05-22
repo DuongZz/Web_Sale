@@ -47,7 +47,7 @@ const validateProduct = async (req, res, next) => {
   try {
     req.body.techSpecification = JSON.parse(req.body.techSpecification);
 
-    req.body.price = parseFloat(req.body.price);
+    req.body.price = parseFloat(req.body.price.replace(/\./g, ""));
     req.body.stock = parseInt(req.body.stock);
     req.body.discount = parseFloat(req.body.discount);
     req.body.year = parseInt(req.body.year);
@@ -56,9 +56,12 @@ const validateProduct = async (req, res, next) => {
     await correctCondition.validateAsync(req.body);
     next();
   } catch (error) {
-    const errorMessage = new Error(error).message
-    const newError = new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage)
-    next(newError)
+    const errorMessage = new Error(error).message;
+    const newError = new ApiError(
+      StatusCodes.UNPROCESSABLE_ENTITY,
+      errorMessage
+    );
+    next(newError);
   }
 };
 

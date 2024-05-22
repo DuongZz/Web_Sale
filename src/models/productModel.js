@@ -4,6 +4,7 @@ import { typeDevice } from "~/enum/typeDevice";
 import { getDB } from "~/config/mongodb";
 import { ObjectId } from "mongodb";
 
+const PROMOTION_COLLECTION_NAME = "promotion-policys";
 const PRODUCT_COLLECTION_NAME = "products";
 const PRODUCT_COLLECTION_SCHEMA = Joi.object({
   deviceCode: Joi.string().required().trim().strict(),
@@ -87,7 +88,11 @@ export const findProductById = async (id) => {
 
 export const findAllProduct = async () => {
   try {
-    return await getDB().collection(PRODUCT_COLLECTION_NAME).find().toArray();
+    const allProducts = await getDB()
+      .collection(PRODUCT_COLLECTION_NAME)
+      .find()
+      .toArray();
+    return { allProducts };
   } catch (error) {
     throw new Error(error);
   }
@@ -107,22 +112,25 @@ export const findProductBySlug = async (slug) => {
       })
       .limit(4)
       .toArray();
-
-    return { mainProduct, relatedProducts };
+    const promotionPolicy = await db
+      .collection(PROMOTION_COLLECTION_NAME)
+      .findOne({ typeDevice: mainProduct.typeDevice });
+    return { mainProduct, relatedProducts, promotionPolicy };
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const findTopSaleProduct = async () => {
+export const findProductByFilter = async (query) => {
   try {
-    return await getDB()
+    const db = getDB();
+    const filteredProducts = await db
       .collection(PRODUCT_COLLECTION_NAME)
-      .find()
+      .find(query)
       .sort({ sold: -1 })
-      .limit(10)
       .toArray();
+    return filteredProducts;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
