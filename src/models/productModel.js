@@ -121,13 +121,14 @@ export const findProductBySlug = async (slug) => {
   }
 };
 
-export const findProductByFilter = async (query) => {
+export const findProductByFilter = async (query, limit, sort) => {
   try {
     const db = getDB();
     const filteredProducts = await db
       .collection(PRODUCT_COLLECTION_NAME)
       .find(query)
-      .sort({ sold: -1 })
+      .limit(limit || 0)
+      .sort({ sold: sort })
       .toArray();
     return filteredProducts;
   } catch (error) {

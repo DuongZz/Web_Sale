@@ -15,14 +15,18 @@ export const filterProductService = async (req) => {
       CPU,
       graphicCard,
       display,
+      limit,
+      sort,
+      brand
     } = req.query;
 
-    if (name) {
-      const query = { name: { $regex: new RegExp(name, "i") } };
-      return findProductByFilter(query);
-    }
+    // if (name) {
+    //   const query = { name: { $regex: new RegExp(name, "i") } };
+    //   return findProductByFilter(query);
+    // }
 
     const query = { _destroy: Boolean(_destroy) || false };
+    if(name) query.name = { $regex: new RegExp(name, "i") }
     if (typeDevice) query.typeDevice = typeDevice;
     if (CPU) query["techSpecification.CPU"] = { $regex: new RegExp(CPU, "i") };
     if (graphicCard)
@@ -31,14 +35,14 @@ export const filterProductService = async (req) => {
       };
     if (display)
       query["techSpecification.display"] = { $regex: new RegExp(display, "i") };
-
+    if(brand) query.brand = brand;
     const priceRange = {
       $gte: parseFloat(minPrice) || 0,
       $lte: parseFloat(maxPrice) || Number.MAX_SAFE_INTEGER,
     };
     query.price = priceRange;
 
-    const filteredProducts = await findProductByFilter(query);
+    const filteredProducts = await findProductByFilter(query, limit, sort);
     return filteredProducts;
   } catch (error) {
     throw error;
