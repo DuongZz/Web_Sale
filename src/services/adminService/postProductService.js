@@ -47,9 +47,9 @@ export const postProductService = async (req) => {
       data.imageList = uploadResults.map((result) => result.secure_url);
     }
 
-    const createdProduct = await createProduct(data)
-    const newProduct = await findProductById(createdProduct.insertedId)
-    return newProduct
+    const createdProduct = await createProduct(data);
+    const newProduct = await findProductById(createdProduct.insertedId);
+    return newProduct;
   } catch (error) {
     throw error;
   }
