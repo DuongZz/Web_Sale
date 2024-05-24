@@ -15,6 +15,7 @@ export const filterProductService = async (req) => {
       CPU,
       graphicCard,
       display,
+      dimensions,
       limit,
       sort,
       brand
@@ -35,6 +36,10 @@ export const filterProductService = async (req) => {
       };
     if (display)
       query["techSpecification.display"] = { $regex: new RegExp(display, "i") };
+    if (dimensions)
+      query["techSpecification.dimensions"] = {
+        $regex: new RegExp(dimensions, "i"),
+      };
     if(brand) query.brand = brand;
     const priceRange = {
       $gte: parseFloat(minPrice) || 0,

@@ -127,7 +127,7 @@ export const findProductByFilter = async (query, limit, sort) => {
     const filteredProducts = await db
       .collection(PRODUCT_COLLECTION_NAME)
       .find(query)
-      .limit(limit || 0)
+      .limit(Number(limit) || 0)
       .sort({ sold: sort })
       .toArray();
     return filteredProducts;
