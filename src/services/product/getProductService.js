@@ -32,6 +32,8 @@ export const filterProductService = async (req) => {
       if (sortArr.includes("sold")) sortObj.sold = 1;
       if (sortArr.includes("discount")) sortObj.discount = 1;
       if (sortArr.includes("-discount")) sortObj.discount = -1;
+      if (sortArr.includes("-price")) sortObj.price = -1;
+      if (sortArr.includes("price")) sortObj.price = 1;
     }
     const query = { _destroy: Boolean(_destroy) || false };
     if (name) query.name = { $regex: new RegExp(name, "i") };
