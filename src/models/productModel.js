@@ -128,7 +128,7 @@ export const findProductByFilter = async (query, limit, sort) => {
       .collection(PRODUCT_COLLECTION_NAME)
       .find(query)
       .limit(Number(limit) || 0)
-      .sort({ sold: sort })
+      .sort(sort)
       .toArray();
     return filteredProducts;
   } catch (error) {
