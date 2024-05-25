@@ -49,7 +49,7 @@ export const filterProductService = async (req) => {
       query["techSpecification.dimensions"] = {
         $regex: new RegExp(dimensions, "i"),
       };
-    if (brand) query.brand = brand;
+    if (brand) query.brand = { $regex: new RegExp(brand, "i") };
     const priceRange = {
       $gte: parseFloat(minPrice) || 0,
       $lte: parseFloat(maxPrice) || Number.MAX_SAFE_INTEGER,
