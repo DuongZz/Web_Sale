@@ -108,13 +108,15 @@ export const findProductBySlug = async (slug) => {
       .collection(PRODUCT_COLLECTION_NAME)
       .find({
         brand: mainProduct.brand,
+        typeDevice: mainProduct.typeDevice,
         _id: { $ne: mainProduct._id },
       })
       .limit(4)
       .toArray();
     const promotionPolicy = await db
       .collection(PROMOTION_COLLECTION_NAME)
-      .findOne({ typeDevice: mainProduct.typeDevice });
+      .find({ typeDevice: mainProduct.typeDevice, _destroy: false })
+      .toArray();
     return { mainProduct, relatedProducts, promotionPolicy };
   } catch (error) {
     throw new Error(error.message);
