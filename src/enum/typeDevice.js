@@ -10,5 +10,5 @@ export const typeDevice = [
 ];
 
 export const bannerPosition = ["top", "rear", "center"];
-export const status = ["pending", "processing", "completed"];
+export const status = ["pending", "processing", "completed", "rejected"];
 export const role = ["admin", "staff"];
