@@ -83,7 +83,6 @@ export const findOrderById = async (id) => {
 };
 
 export const findOrdersByUserId = async (id) => {
-  console.log(id);
   try {
     return await getDB()
       .collection(ORDER_COLLECTION_NAME)
@@ -101,6 +100,7 @@ export const findOrdersByUserId = async (id) => {
             as: "products",
           },
         },
+        // sau này thêm cả staff
       ])
       .toArray();
   } catch (error) {

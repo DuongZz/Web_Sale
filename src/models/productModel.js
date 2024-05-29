@@ -2,7 +2,7 @@ import Joi from "joi";
 import { generateSlug } from "~/utils/generateSlug";
 import { typeDevice } from "~/enum/typeDevice";
 import { getDB } from "~/config/mongodb";
-import { ObjectId } from "mongodb";
+import { ObjectId, ReturnDocument } from "mongodb";
 
 const PROMOTION_COLLECTION_NAME = "promotion-policys";
 const PRODUCT_COLLECTION_NAME = "products";
@@ -133,6 +133,25 @@ export const findProductByFilter = async (query, limit, sort) => {
       .sort(sort)
       .toArray();
     return filteredProducts;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getProductFromStorage = async (id, quantity) => {
+  try {
+    return await getDB()
+      .collection(PRODUCT_COLLECTION_NAME)
+      .findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        {
+          $inc: {
+            stock: -quantity, // Decrement the quantity by the specified amount
+            sold: quantity, // Increment the sold by the specified amount
+          },
+        },
+        { returnDocument: "after" }
+      );
   } catch (error) {
     throw error;
   }
