@@ -8,6 +8,6 @@ const router = Router();
 
 router.post('/login', login)
 router.post('/logout', checkJWTAdmin, logout)
-router.post('/getme', checkJWTAdmin, getMe)
+router.get('/getme', checkJWTAdmin, getMe)
 
 export default router;
