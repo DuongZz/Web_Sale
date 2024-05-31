@@ -33,7 +33,7 @@ export const createPaymentWithZalo = async (req, res, next) => {
       //khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
       //Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
       callback_url:
-        "https://a957-2402-800-61cd-979d-e84d-a8c6-1908-fa93.ngrok-free.app/api/payment/zalo-callback",
+        "https://4bff-2402-800-61cd-979d-958b-3eca-56c4-d73a.ngrok-free.app/api/payment/zalo-callback",
       description: `GearVN - Payment for the order #${transID}`,
       bank_code: "",
     };
