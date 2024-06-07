@@ -92,7 +92,7 @@ export const findAllProduct = async () => {
       .collection(PRODUCT_COLLECTION_NAME)
       .find()
       .toArray();
-    return { allProducts };
+    return allProducts;
   } catch (error) {
     throw new Error(error);
   }
