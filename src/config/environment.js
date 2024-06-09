@@ -22,4 +22,7 @@ export const env = {
   ZALO_API_KEY: process.env.ZALO_API_ID,
   ZALO_KEY_1: process.env.ZALO_KEY_1,
   ZALO_KEY_2: process.env.ZALO_KEY_2,
+  //momo
+  MOMO_ACCESS_KEY: process.env.MOMO_ACCESS_KEY,
+  MOMO_SECRET_KEY: process.env.MOMO_SECRET_KEY,
 };

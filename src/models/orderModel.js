@@ -107,3 +107,14 @@ export const findOrdersByUserId = async (id) => {
     throw error;
   }
 };
+
+export const updateOrder = async (orderId, updateData) => {
+  try {
+    const result = await getDB()
+      .collection(ORDER_COLLECTION_NAME)
+      .updateOne({ _id: new ObjectId(orderId) }, { $set: updateData });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
