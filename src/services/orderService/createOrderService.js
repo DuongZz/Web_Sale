@@ -47,12 +47,12 @@ export const createOrderService = async (req) => {
 
     // update order in user
     if (user) pushOrder(userId, createdOrder.insertedId);
-    //update hàng
-    // await Promise.all(
-    //   product.map(async (item) => {
-    //     getProductFromStorage(item.productId, item.quantity);
-    //   })
-    // );
+    //update hàng (OK)
+    await Promise.all(
+      product.map(async (item) => {
+        getProductFromStorage(item.productId, item.quantity);
+      })
+    );
     return await findOrderById(createdOrder.insertedId);
   } catch (error) {
     throw error;
