@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import ApiError from "~/utils/ApiError";
 import { findOrderById } from "~/models/orderModel";
 import { updateOrder } from "~/models/orderModel";
+import { env } from "~/config/environment";
 
 export const initiatePaymentMomo = async (req, res, next) => {
   const id = req.body.id;
@@ -64,7 +65,7 @@ export const initiatePaymentMomo = async (req, res, next) => {
 
   const options = {
     method: "POST",
-    url: "https://test-payment.momo.vn/v2/gateway/api/create",
+    url: env.ENDPOINT_MOMO,
     headers: {
       "Content-Type": "application/json",
       "Content-Length": Buffer.byteLength(requestBody),

@@ -4,10 +4,8 @@ export const momoConfig = {
   secretKey: env.MOMO_SECRET_KEY, //MOMO cung cấp mã riêng
   orderInfo: "Thanh toán với MOMO",
   partnerCode: "MOMO",
-  redirectUrl:
-    "https://70ea-2405-4802-1c83-c640-710c-52b7-1f44-8244.ngrok-free.app",
-  ipnUrl:
-    "https://70ea-2405-4802-1c83-c640-710c-52b7-1f44-8244.ngrok-free.app/api/payment/momo-check",
+  redirectUrl: env.REDIRECT_URL_MOMO,
+  ipnUrl: env.IPN_URL_MOMO,
   requestType: "payWithMethod",
   amount: "",
   extraData: "",

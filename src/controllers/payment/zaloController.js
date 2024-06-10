@@ -2,7 +2,7 @@ import axios from "axios";
 import moment from "moment";
 const CryptoJS = require("crypto-js");
 import { env } from "~/config/environment";
-import { findOrderById } from "~/models/orderModel";
+import { findOrderById, updateOrder } from "~/models/orderModel";
 import zaloConfig from "~/config/zaloPayConfig";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "~/utils/ApiError";
@@ -32,8 +32,7 @@ export const createPaymentWithZalo = async (req, res, next) => {
       amount: preOrder.totalAmount,
       //khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
       //Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
-      callback_url:
-        "https://4bff-2402-800-61cd-979d-958b-3eca-56c4-d73a.ngrok-free.app/api/payment/zalo-callback",
+      callback_url: env.ZALO_CALLBACK,
       description: `GearVN - Payment for the order #${transID}`,
       bank_code: "",
     };
@@ -84,6 +83,11 @@ export const zaloCallback = async (req, res) => {
       const id = dataJson["app_trans_id"].split("_")[1];
       console.log("orderId", id);
       // merchant cập nhật trạng thái cho đơn hàng ở đây
+      await updateOrder(id, {
+        isPaided: true,
+        updateAt: new Date(),
+      });
+      console.log(`Đơn hàng đã được thanh toán thành công`);
       result.return_code = 1;
       result.return_message = "success";
     }
