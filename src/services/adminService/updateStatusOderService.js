@@ -1,7 +1,6 @@
 import { findOrderById, updateOrder } from "~/models/orderModel";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "~/utils/ApiError";
-import { returnProduct } from "~/models/productModel";
 
 export const updateStatusOrderService = async (req, res, next) => {
   try {
@@ -14,13 +13,6 @@ export const updateStatusOrderService = async (req, res, next) => {
       status: status,
       updateAt: new Date(),
     });
-    // Kiểm tra nếu trạng thái mới là "rejected", sau đó tăng số lượng tồn kho
-    if (status === "rejected") {
-      console.log(
-        "🚀 ~ updateStatusOrderService ~ order.product.quantity:",
-        order.product
-      );
-    }
   } catch (error) {
     throw error;
   }

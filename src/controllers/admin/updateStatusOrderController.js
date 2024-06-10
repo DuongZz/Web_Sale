@@ -1,4 +1,4 @@
-import { updateStatusOrderService } from "~/services/orderService/updateStatusOderService";
+import { updateStatusOrderService } from "~/services/adminService/updateStatusOderService";
 import { StatusCodes } from "http-status-codes";
 
 export const updateStatusOrderController = async (req, res, next) => {
