@@ -2,7 +2,7 @@ import { findOrderById, updateOrder } from "~/models/orderModel";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "~/utils/ApiError";
 
-export const updateStatusOrderService = async (req, res, next) => {
+export const updateStatusOrderService = async (req) => {
   try {
     const { id, status } = req.body;
     const order = await findOrderById(id);

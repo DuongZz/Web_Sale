@@ -8,6 +8,6 @@ const router = Router();
 router.use(checkJWT);
 router.get("/me", getMe);
 router.get("/my-order", getMyOrder);
-router.patch("/update-me", updateMeController )
+router.patch("/update-me", updateMeController);
 
 export default router;
