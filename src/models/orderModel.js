@@ -118,3 +118,26 @@ export const updateOrder = async (orderId, updateData) => {
     throw error;
   }
 };
+
+export const getAllOrder = async () => {
+  try {
+    return await getDB()
+      .collection(ORDER_COLLECTION_NAME)
+      .aggregate([
+        { $match: {} },
+        {
+          $lookup: {
+            from: productModel.PRODUCT_COLLECTION_NAME,
+            localField: "product.productId",
+            foreignField: "_id",
+            as: "products",
+          },
+        },
+        { $sort: { createAt: -1 } },
+        // sau này thêm cả staff
+      ])
+      .toArray();
+  } catch (error) {
+    throw error;
+  }
+};
