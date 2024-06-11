@@ -11,7 +11,7 @@ export const updateStatusOrderService = async (req) => {
 
     await updateOrder(id, {
       status: status,
-      updateAt: new Date(),
+      updateAt: Date.now,
     });
   } catch (error) {
     throw error;
