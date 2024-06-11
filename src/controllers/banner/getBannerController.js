@@ -3,9 +3,9 @@ import { getBannersService } from "~/services/banner/getBannersService";
 
 export const getBannersController = async (req, res, next) => {
   try {
-    const banner = await getBannersService(req)
+    const banner = await getBannersService(req);
 
-    res.status(StatusCodes.CREATED).json({
+    res.status(StatusCodes.OK).json({
       message: "Get Banners successfully",
       length: banner.length,
       banner,
@@ -13,4 +13,4 @@ export const getBannersController = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
