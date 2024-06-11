@@ -13,23 +13,23 @@ const PRODUCT_COLLECTION_SCHEMA = Joi.object({
   stock: Joi.number().required().strict(),
   information: Joi.string().trim().strict(),
   techSpecification: Joi.object({
-    CPU: Joi.string(),
-    RAM: Joi.string(),
-    storage: Joi.string(),
-    graphicCard: Joi.string(),
-    display: Joi.string(),
-    ports: Joi.string(),
-    audio: Joi.string(),
-    keyboard: Joi.string(),
-    cardReader: Joi.string(),
-    wifiStandard: Joi.string(),
-    bluetooth: Joi.string(),
-    webcam: Joi.string(),
-    operatingSystem: Joi.string(),
-    battery: Joi.string(),
-    weight: Joi.string(),
-    color: Joi.string(),
-    dimensions: Joi.string(),
+    CPU: Joi.string().allow(null, ""),
+    RAM: Joi.string().allow(null, ""),
+    storage: Joi.string().allow(null, ""),
+    graphicCard: Joi.string().allow(null, ""),
+    display: Joi.string().allow(null, ""),
+    ports: Joi.string().allow(null, ""),
+    audio: Joi.string().allow(null, ""),
+    keyboard: Joi.string().allow(null, ""),
+    cardReader: Joi.string().allow(null, ""),
+    wifiStandard: Joi.string().allow(null, ""),
+    bluetooth: Joi.string().allow(null, ""),
+    webcam: Joi.string().allow(null, ""),
+    operatingSystem: Joi.string().allow(null, ""),
+    battery: Joi.string().allow(null, ""),
+    weight: Joi.string().allow(null, ""),
+    color: Joi.string().allow(null, ""),
+    dimensions: Joi.string().allow(null, ""),
   }),
   brand: Joi.string().required().trim().strict(),
   discount: Joi.number().required().strict(),
@@ -90,9 +90,9 @@ export const findAllProduct = async () => {
   try {
     const allProducts = await getDB()
       .collection(PRODUCT_COLLECTION_NAME)
-      .find()
+      .find({ _destroy: false })
       .toArray();
-    return { allProducts };
+    return allProducts;
   } catch (error) {
     throw new Error(error);
   }
@@ -152,6 +152,16 @@ export const getProductFromStorage = async (id, quantity) => {
         },
         { returnDocument: "after" }
       );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateProduct = async (filter, doc, options) => {
+  try {
+    return await getDB()
+      .collection(PRODUCT_COLLECTION_NAME)
+      .updateOne(filter, doc, options);
   } catch (error) {
     throw error;
   }
