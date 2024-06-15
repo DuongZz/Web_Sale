@@ -38,8 +38,9 @@ const PRODUCT_COLLECTION_SCHEMA = Joi.object({
     .required()
     .trim()
     .strict(),
-  rateQuan: Joi.number().strict(),
-  rateSum: Joi.number().strict(),
+  rateQuan: Joi.number().strict().default(0),
+  rateSum: Joi.number().strict().default(0),
+  rateList: Joi.array().default([]),
   imageList: Joi.array().items(Joi.string().required()),
   year: Joi.number().required().strict(),
   sold: Joi.number().required().strict(),
