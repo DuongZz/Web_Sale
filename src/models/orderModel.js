@@ -11,11 +11,6 @@ const ORDER_COLLECTION_SCHEMA = Joi.object({
     .message(OBJECT_ID_RULE_MESSAGE)
     .trim()
     .strict(),
-  staffId: Joi.string()
-    .pattern(OBJECT_ID_RULE)
-    .message(OBJECT_ID_RULE_MESSAGE)
-    .trim()
-    .strict(),
   name: Joi.string().required().trim().strict(),
   email: Joi.string().required().trim().strict(),
   phone: Joi.string().required().trim().strict(),
