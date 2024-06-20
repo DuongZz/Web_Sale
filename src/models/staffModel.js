@@ -46,9 +46,6 @@ const STAFF_COLLECTION_SCHEMA = Joi.object({
     .valid(...role)
     .default("staff"),
   password: Joi.string().required().trim().strict(),
-  orderId: Joi.array()
-    .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
-    .default([]),
   createAt: Joi.date().timestamp("javascript").default(Date.now),
   _destroy: Joi.boolean().default(false),
 });

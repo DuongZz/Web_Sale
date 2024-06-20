@@ -25,12 +25,13 @@ connectDB()
     process.exit(0);
   });
 
-app.get("/", async (req, res) => {
-  try {
-    const collections = await getDB().listCollections().toArray();
-    res.json({ collections });
-  } catch (error) {
-    console.error("Error fetching collections: ", error);
-    res.status(500).json({ error: "Failed to fetch collections" });
-  }
-});
+// app.get("/", async (req, res) => {
+//   try {
+//     const collections = await getDB().listCollections().toArray();
+//     res.json({ collections });
+//   } catch (error) {
+//     console.error("Error fetching collections: ", error);
+//     res.status(500).json({ error: "Failed to fetch collections" });
+//   }
+// }
+// );

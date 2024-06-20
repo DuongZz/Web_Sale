@@ -8,6 +8,7 @@ import { checkJWTAdmin } from "~/middlewares/checkJWTAdmin.js";
 import { checkAdminRole } from "~/middlewares/checkAdminRole.js";
 import { rejectUser } from "~/middlewares/rejectUser.js";
 import adminOrderRoute from "~/routes/admin/adminOrderRoute.js";
+import { getWarrantyController } from "~/controllers/admin/getWarrantyController.js";
 const router = Router();
 
 router.use("/auth", adminAuthRoute);
@@ -17,6 +18,8 @@ router.use("/product", adminProdRoute);
 router.use("/banner", adminBannerRoute);
 router.use("/promotion", adminPromotionPolicyRoute);
 router.use("/order", adminOrderRoute);
+
+router.get("/warranty", getWarrantyController);
 
 router.use(checkAdminRole);
 router.use("/staff", staffRoute);

@@ -5,7 +5,8 @@ import { getProductFromStorage } from "~/models/productModel";
 
 export const cancelOrderService = async (req) => {
   try {
-    const id = req.body.id;
+    const id = req.params.id;
+    console.log(id)
     const order = await findOrderById(id);
 
     if (!order) throw new ApiError(StatusCodes.NOT_FOUND, "Not Found Order");
@@ -17,7 +18,7 @@ export const cancelOrderService = async (req) => {
     }
     await updateOrder(id, {
       status: "rejected",
-      updateAt: new Date(),
+      updateAt: Date.now(),
     });
     await Promise.all(
       order.product.map(async (item) => {

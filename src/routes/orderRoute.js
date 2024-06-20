@@ -4,5 +4,5 @@ import { createOrderController } from "~/controllers/order/createOrderController
 
 const router = Router();
 router.post("/", createOrderController);
-router.post("/cancel", cancelOrderController);
+router.post("/cancel/:id", cancelOrderController);
 export default router;

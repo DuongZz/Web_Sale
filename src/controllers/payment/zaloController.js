@@ -85,7 +85,7 @@ export const zaloCallback = async (req, res) => {
       // merchant cập nhật trạng thái cho đơn hàng ở đây
       await updateOrder(id, {
         isPaided: true,
-        updateAt: new Date(),
+        updateAt: Date.now(),
       });
       console.log(`Đơn hàng đã được thanh toán thành công`);
       result.return_code = 1;
