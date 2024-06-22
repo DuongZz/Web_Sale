@@ -26,7 +26,7 @@ if (process.env.BUILD_MODE === "dev") app.use(morgan("dev"));
 app.use("/api", router);
 
 const server = createServer(app);
-const io = new Server(server, socketConfig);
+export const io = new Server(server, socketConfig);
 
 io.on("connection", onConnect);
 
