@@ -1,7 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { deleteBannerService } from "~/services/adminService/deleteBannerService";
 
-
 export const deleteBannerController = async (req, res, next) => {
   try {
     await deleteBannerService(req);
@@ -10,4 +9,4 @@ export const deleteBannerController = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
