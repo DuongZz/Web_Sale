@@ -30,4 +30,8 @@ export const env = {
   REDIRECT_URL_MOMO: process.env.REDIRECT_URL_MOMO,
   IPN_URL_MOMO: process.env.IPN_URL_MOMO,
   ENDPOINT_MOMO: process.env.ENDPOINT_MOMO,
+  //email
+  SENDER_EMAIL: process.env.SENDER_EMAIL,
+  PASS_APP: process.env.PASS_APP,
+  HOST_MAIL: process.env.HOST_MAIL,
 };
