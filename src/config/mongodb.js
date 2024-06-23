@@ -1,18 +1,26 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+import { MongoClient, ServerApiVersion } from "mongodb";
+import { env } from "./environment";
 
-dotenv.config();
-const DB = process.env.DATABASE.replace(
-  "<password>",
-  process.env.DATABASE_PASSWORD
-);
+let databaseInstance = null;
 
-export const DBConnection = () => {
-  mongoose.connect(DB);
-  mongoose.connection.on("connected", () => {
-    console.log("Connected to database");
-  });
-  mongoose.connection.on("error", (err) => {
-    console.error("Connect fail: ", err);
-  });
+const client = new MongoClient(env.DATABASE_URL, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
+
+export const connectDB = async () => {
+  await client.connect();
+  databaseInstance = client.db(env.DATABASE_NAME);
 };
+
+export const getDB = () => {
+  if (!databaseInstance) throw new Error("Must connect to Database first!");
+  return databaseInstance;
+};
+
+export const CLOSE_DB = async () => {
+  await databaseInstance.close()
+}
