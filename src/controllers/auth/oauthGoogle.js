@@ -49,7 +49,7 @@ export const oauthGoogle = async (req, res, next) => {
     );
 
     res.send(
-      `<script>window.opener.postMessage({ accessToken: "${accessToken}", refreshToken: "${refreshToken}"  }, "*");</script>`
+      `<script>window.opener.postMessage({ accessToken: "${accessToken}", refreshToken: "${refreshToken}"  }, "*");window.close();</script>`
     );
   } catch (error) {
     next(error);
