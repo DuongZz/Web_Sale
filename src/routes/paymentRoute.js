@@ -15,7 +15,7 @@ router.post("/momo-check", handleMomoIPN);
 
 //zalo pay --------------------------------
 
-router.post("/zalo", createPaymentWithZalo);
+router.post("/zalo", createPaymentWithZalo);  
 
 /**
  * method: POST
